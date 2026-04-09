@@ -196,19 +196,19 @@ meson setup builddir \
 
 
 ## Root Filesystem 依赖与软件环境
-
-- [MangoHud Cmod](https://github.com/coffincolors/winlator/releases/tag/winlator_mangohud_glibc_v1)（Winlator 补丁版）
-
 ### 重新构建 / 新增 / 更新
+- [MangoHud Cmod](https://github.com/coffincolors/winlator/releases/tag/winlator_mangohud_glibc_v1)--add
+- [GStreamer](https://github.com/GStreamer/gstreamer)--remake & update
+- [xz](https://github.com/tukaani-project/xz)--add
+- [libxkbcommon](https://github.com/xkbcommon/libxkbcommon)--add
+- [xkeyboard-config](https://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/)--add
+- [FLAC](https://github.com/xiph/flac)--update
+- [GLib](https://github.com/GNOME/glib)--update
+- [libxkbfile](https://xorg.freedesktop.org/releases/individual/lib/)--add
 
-- [GStreamer](https://github.com/GStreamer/gstreamer) — remake & update
-- [MangoHud](https://github.com/flightlessmango/MangoHud)
-- [xz](https://github.com/tukaani-project/xz)
-- [libxkbcommon](https://github.com/xkbcommon/libxkbcommon)
-- [xkeyboard-config](https://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/)
-- [FLAC](https://github.com/xiph/flac)
-- [GLib](https://github.com/GNOME/glib)
-- [libxkbfile](https://xorg.freedesktop.org/releases/individual/lib/)
+## 其他
+
+- [MangoHud](https://github.com/flightlessmango/MangoHud) 未加入（基于原版开源的版本）
 
 ## 补丁参考
 
