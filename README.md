@@ -1,6 +1,8 @@
 # Root Filesystem Customized
 此仓库使用 GPL-3.0 协议开源
+
 [![GPL-3.0](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
+
 Winlator glibc 定制版 imagefs，用于补全原版 Winlator 的项目，适用于 [moze30/winlator-glibc](https://github.com/moze30/winlator-glibc)。
 ## 目录
 - [使用](#use)
