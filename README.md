@@ -199,22 +199,16 @@ meson setup builddir \
 
 - [MangoHud Cmod](https://github.com/coffincolors/winlator/releases/tag/winlator_mangohud_glibc_v1)（Winlator 补丁版）
 
-### 重新构建 / 新增
+### 重新构建 / 新增 / 更新
 
 - [GStreamer](https://github.com/GStreamer/gstreamer) — remake & update
 - [MangoHud](https://github.com/flightlessmango/MangoHud)
 - [xz](https://github.com/tukaani-project/xz)
 - [libxkbcommon](https://github.com/xkbcommon/libxkbcommon)
 - [xkeyboard-config](https://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/)
-
-### 更新
-
 - [FLAC](https://github.com/xiph/flac)
 - [GLib](https://github.com/GNOME/glib)
-
-### X11 相关依赖
-
-- [libxkbfile](https://xorg.freedesktop.org/releases/individual/lib/)、[xkeyboard-config](https://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/)
+- [libxkbfile](https://xorg.freedesktop.org/releases/individual/lib/)
 
 ## 补丁参考
 
