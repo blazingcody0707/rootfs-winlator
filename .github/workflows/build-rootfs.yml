@@ -1,0 +1,138 @@
+name: Winlator Rootfs Build (use BCC)
+
+permissions:
+  contents: write
+
+  # https://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/
+  # https://xorg.freedesktop.org/releases/individual/lib/
+on:
+  workflow_dispatch:
+    inputs:
+      inputGstVersion:
+        description: "输入gstreamer版本："
+        required: true
+        default: "1.28.1"
+      inputXzVersion:
+        description: "输入xz版本："
+        required: true
+        default: "v5.8.1"
+      inputFlacVersion:
+        description: "输入flac版本："
+        required: true
+        default: "1.5.0"
+      inputXkbcommonVersion:
+        description: "输入xkbcommon的版本："
+        required: true
+        default: "xkbcommon-1.13.0"
+      inputMangohudVersion:
+        description: "输入MangoHud版本："
+        required: true
+        default: "cmod"
+      inputGlibVersion:
+        description: "输入glib版本："
+        required: true
+        default: "2.86.3"
+      # inputMonoVersion:
+      #   description: "mono版本："
+      #   required: true
+      #   default: "10.3.0"
+      # inputGeckoVersion:
+      #   description: "gecko：版本："
+      #   required: true
+      #   default: "2.47.4"
+      inputCustomTag:
+        description: "输入自定义Tag名称："
+        required: true
+        default: "g7.1.5-"
+
+env:
+  gstVer: ${{ github.event.inputs.inputGstVersion }}
+  xzVer: ${{ github.event.inputs.inputXzVersion }}
+  xkbcommonVer: ${{ github.event.inputs.inputXkbcommonVersion }}
+  mangohudVer: ${{ github.event.inputs.inputMangohudVersion }}
+  customTag: ${{ github.event.inputs.inputCustomTag }}
+  glibVer: ${{ github.event.inputs.inputGlibVersion }}
+  flacVer: ${{ github.event.inputs.inputFlacVersion }}
+  #monoVer: ${{ github.event.inputs.inputMonoVersion }}
+  #geckoVer: ${{ github.event.inputs.inputGeckoVersion }}
+
+jobs:
+  BCC:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: BCC
+        run: |
+          echo "gstreamer ${gstVer}"
+          curl -L -O "https://github.com/Waim908/BCC/releases/download/wlt-bcc-latest/wlt-bcc.tar.xz"
+          sudo tar xf wlt-bcc.tar.xz -C /tmp
+          cd /tmp
+          git clone https://github.com/Waim908/rootfs-winlator.git
+          sudo cp rootfs-winlator-glibc/build-rootfs.sh /tmp/archlinux/bin
+          mv rootfs-winlator-glibc/data.tar.xz /tmp/archlinux/tmp
+          mv rootfs-winlator-glibc/tzdata-*-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp
+          mv rootfs-winlator-glibc/patches /tmp/archlinux/tmp
+          mv rootfs-winlator-glibc/mangohud.tar.xz /tmp/archlinux/tmp
+          mv rootfs-winlator-glibc/fonts /tmp/archlinux/tmp
+          mv rootfs-winlator-glibc/extra /tmp/archlinux/tmp
+          # mv rootfs-winlator-glibc/lame-3.100 /tmp/archlinux/tmp
+          mv rootfs-winlator-glibc/extra-res /tmp/archlinux/tmp
+          sudo chmod +x /tmp/archlinux/bin/build-rootfs.sh
+          # sudo chmod 777 /tmp/archlinux/tmp
+          # cd /tmp/archlinux/tmp
+          # git clone -b ${gstVer} https://gitlab.freedesktop.org/gstreamer/gstreamer.git gstreamer-src
+          # cd /tmp
+          cat > /tmp/archlinux/tmp/init.sh << EOF
+          export gstVer=$gstVer
+          export xzVer=$xzVer
+          export xkbcommonVer=$xkbcommonVer
+          export mangohudVer=$mangohudVer
+          export customTag=$customTag
+          export flacVer=$flacVer
+          export glibVer=$glibVer
+          #export monoVer=$monoVer
+          #export geckoVer=$geckoVer
+          EOF
+          # echo "export gstVer=$gstVer" > /tmp/archlinux/tmp/init.sh
+          # echo "export xzVer=$xzVer" >> /tmp/archlinux/tmp/init.sh
+          # echo "export vorbisVer=$vorbisVer" >> /tmp/archlinux/tmp/init.sh
+          sudo mount --bind /proc archlinux/proc
+          sudo mount --bind /sys archlinux/sys
+          sudo mount --bind /dev archlinux/dev
+          if ! sudo chroot /tmp/archlinux /bin/build-rootfs.sh; then
+            echo "失败"
+            exit 1
+          fi
+          sudo umount -l archlinux/dev
+          sudo umount -l archlinux/sys
+          sudo umount -l archlinux/proc
+
+      # - name: Package
+      #   run: |
+      #     cd /tmp/archlinux/data/data/com.termux/files/usr
+      #     tar -I "xz -T$(nproc)" -cvf /tmp/gstreamer-${gstVer}.tar.xz glibc/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: rootfs-${{ github.event.inputs.inputCustomTag }}
+          draft: false
+          prerelease: false
+          tag_name: rootfs-${{ github.event.inputs.inputCustomTag }}
+          body: |
+              xz=> ${{ github.event.inputs.inputXzVersion }}
+              libFLAC=> ${{ github.event.inputs.inputFlacVersion }}
+              gstreamer=> ${{ github.event.inputs.inputGstVersion }}
+              xkbcommon=> ${{ github.event.inputs.inputXkbcommonVersion }}
+              glib=> ${{ github.event.inputs.inputGlibVersion }}
+              MangoHud=> ${{ github.event.inputs.inputMangohudVersion }}
+              customTag=> ${{ github.event.inputs.inputCustomTag }}
+              ...
+              more info look '_version_.txt' for imagefs
+              Rename to `imagefs.txz` put to apk/assets/imagefs.txz
+
+          files: |
+            /tmp/archlinux/tmp/output/output-lite-${{ github.event.inputs.inputCustomTag }}.tar.xz
+            /tmp/archlinux/tmp/output/output-full-${{ github.event.inputs.inputCustomTag }}.tar.xz
+            /tmp/archlinux/tmp/output/imagefs-${{ github.event.inputs.inputCustomTag }}.tzst
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
