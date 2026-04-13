@@ -60,6 +60,25 @@ jobs:
   BCC:
     runs-on: ubuntu-24.04-arm
     steps:
+      - name: Restore ccache
+        id: restore-ccache
+        uses: actions/cache/restore@v4
+        with:
+          path: /tmp/ccache.tar.xz
+          key: ccache-${{ github.event.inputs.inputGstVersion }}-${{ github.event.inputs.inputGlibVersion }}-${{ github.event.inputs.inputXzVersion }}
+          restore-keys: |
+            ccache-${{ github.event.inputs.inputGstVersion }}-
+            ccache-
+
+      - name: Check ccache exists
+        run: |
+          if [[ -f /tmp/ccache.tar.xz ]]; then
+            echo "ccache 缓存已恢复"
+            ls -lh /tmp/ccache.tar.xz
+          else
+            echo "ccache 缓存不存在，将创建新的缓存"
+          fi
+
       - name: BCC
         run: |
           echo "gstreamer ${gstVer}"
@@ -72,10 +91,12 @@ jobs:
           mv rootfs-winlator-glibc/tzdata-*-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp
           mv rootfs-winlator-glibc/patches /tmp/archlinux/tmp
           mv rootfs-winlator-glibc/mangohud.tar.xz /tmp/archlinux/tmp
-          mv rootfs-winlator-glibc/fonts /tmp/archlinux/tmp
-          mv rootfs-winlator-glibc/extra /tmp/archlinux/tmp
           # mv rootfs-winlator-glibc/lame-3.100 /tmp/archlinux/tmp
-          mv rootfs-winlator-glibc/extra-res /tmp/archlinux/tmp
+          # 复制 ccache 缓存到 chroot 环境（如果存在）
+          if [[ -f /tmp/ccache.tar.xz ]]; then
+            echo "复制 ccache 到 chroot 环境..."
+            sudo cp /tmp/ccache.tar.xz /tmp/archlinux/tmp/
+          fi
           sudo chmod +x /tmp/archlinux/bin/build-rootfs.sh
           # sudo chmod 777 /tmp/archlinux/tmp
           # cd /tmp/archlinux/tmp
@@ -105,6 +126,25 @@ jobs:
           sudo umount -l archlinux/dev
           sudo umount -l archlinux/sys
           sudo umount -l archlinux/proc
+
+      - name: Copy ccache from chroot
+        run: |
+          # 从 chroot 环境中复制打包好的 ccache
+          if [[ -f /tmp/archlinux/tmp/ccache.tar.xz ]]; then
+            echo "复制 ccache 从 chroot 环境..."
+            sudo cp /tmp/archlinux/tmp/ccache.tar.xz /tmp/ccache-new.tar.xz
+            sudo chmod 777 /tmp/ccache-new.tar.xz
+            ls -lh /tmp/ccache-new.tar.xz
+          else
+            echo "警告: chroot 环境中没有找到 ccache.tar.xz"
+          fi
+
+      - name: Save ccache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: /tmp/ccache-new.tar.xz
+          key: ccache-${{ github.event.inputs.inputGstVersion }}-${{ github.event.inputs.inputGlibVersion }}-${{ github.event.inputs.inputXzVersion }}-${{ github.run_id }}
 
       # - name: Package
       #   run: |

@@ -104,8 +104,26 @@ clean_old_depends () {
 
 # 使用O2是为了稳定性和性能的平衡
 
-export CFLAGS="-O2 -march=armv8-a -mtune=generic -flto=auto"
-export CXXFLAGS="-O2 -march=armv8-a -mtune=generic -flto=auto"
+export CC="ccache aarch64-linux-gnu-gcc"
+export CXX="ccache aarch64-linux-g++"
+# 恢复 ccache 缓存（如果存在）
+if [[ -f /tmp/ccache.tar.xz ]]; then
+  echo "恢复 ccache 缓存..."
+  mkdir -p ~/.cache
+  tar -I 'xz -T$(nproc)' -xf /tmp/ccache.tar.xz -C ~/.cache || echo "ccache 恢复失败，将使用空缓存"
+fi
+
+# 确保 ccache 目录存在
+mkdir -p ~/.cache/ccache
+
+# 配置 ccache
+export CCACHE_DIR="$HOME/.cache/ccache"
+export CCACHE_MAXSIZE=2G
+ccache -s 2>/dev/null || true
+
+
+export CFLAGS="-O2 -march=armv8-a -mtune=generic -flto=auto -pipe -ftree-vectorize"
+export CXXFLAGS="-O2 -march=armv8-a -mtune=generic -flto=auto -pipe -ftree-vectorize"
 export LDFLAGS="-O2 -flto=auto -s"
 
 if [[ ! -f /tmp/init.sh ]]; then
@@ -370,6 +388,11 @@ if ! meson compile -C builddir; then
   exit 1
 fi
 meson install -C builddir
+
+echo "全部编译已完成，打包ccache。"
+cd ~/.cache
+tar -I 'xz -T$(nproc)' -cf /tmp/ccache.tar.xz ccache || { echo "ccache打包失败！" && exit 1;}
+
 export date=$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')
 # package
 echo "Package"
@@ -430,3 +453,6 @@ tar -xf /tmp/output/output-full-${customTag}.tar.xz -C /data/data/com.winlator/f
 if ! tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/imagefs-${customTag}.tzst .; then
   exit 1
 fi
+
+cd ~/.cache
+tar -I 'zstd -T$(nproc)' -cf /tmp/ccache.tar.xz ccache/
