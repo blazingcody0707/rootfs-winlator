@@ -91,8 +91,6 @@ jobs:
 
       - name: BCC
         run: |
-          echo "gstreamer ${gstVer}"
-          curl -L -O "https://github.com/Waim908/BCC/releases/download/wlt-bcc-latest/wlt-bcc.tar.xz"
           sudo tar xf wlt-bcc.tar.xz -C /tmp
           cd /tmp
           git clone https://github.com/Waim908/rootfs-winlator.git
