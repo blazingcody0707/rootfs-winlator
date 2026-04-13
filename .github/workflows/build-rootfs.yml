@@ -43,7 +43,15 @@ on:
       inputCustomTag:
         description: "输入自定义Tag名称："
         required: true
-        default: "g7.1.5-"
+        default: "glibc2.39-"
+      inputWineArm64ecURL:
+        description: "输入 Wine ARM64EC 下载 URL："
+        required: true
+        default: ""
+      inputWineAmd64URL:
+        description: "输入 Wine AMD64 下载 URL："
+        required: true
+        default: ""
 
 env:
   gstVer: ${{ github.event.inputs.inputGstVersion }}
@@ -53,6 +61,8 @@ env:
   customTag: ${{ github.event.inputs.inputCustomTag }}
   glibVer: ${{ github.event.inputs.inputGlibVersion }}
   flacVer: ${{ github.event.inputs.inputFlacVersion }}
+  wineArm64ecURL: ${{ github.event.inputs.inputWineArm64ecURL }}
+  wineAmd64URL: ${{ github.event.inputs.inputWineAmd64URL }}
   #monoVer: ${{ github.event.inputs.inputMonoVersion }}
   #geckoVer: ${{ github.event.inputs.inputGeckoVersion }}
 
@@ -110,6 +120,8 @@ jobs:
           export customTag=$customTag
           export flacVer=$flacVer
           export glibVer=$glibVer
+          export wineArm64ecURL=$wineArm64ecURL
+          export wineAmd64URL=$wineAmd64URL
           #export monoVer=$monoVer
           #export geckoVer=$geckoVer
           EOF
@@ -167,6 +179,10 @@ jobs:
               MangoHud=> ${{ github.event.inputs.inputMangohudVersion }}
               customTag=> ${{ github.event.inputs.inputCustomTag }}
               ...
+              run on winlator 7.1.6+
+              wine amd64:
+              wine arm64:
+
               more info look '_version_.txt' for imagefs
               Rename to `imagefs.txz` put to apk/assets/imagefs.txz
 

@@ -450,9 +450,25 @@ rm -rf /data/data/com.winlator/files/imagefs/usr/lib/gstreamer-1.0/
 #######
 tar -xf /tmp/output/output-full-${customTag}.tar.xz -C /data/data/com.winlator/files/imagefs/
 #create_ver_txt
-if ! tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/imagefs-${customTag}.tzst .; then
-  exit 1
-fi
+tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/imagefs-${customTag}-old.tzst . || exit 1
 
-cd ~/.cache
-tar -I 'zstd -T$(nproc)' -cf /tmp/ccache.tar.xz ccache/
+rm -rf /data/data/com.winlator/files/imagefs/opt/*
+mkdir  /data/data/com.winlator/files/imagefs/opt/arm64ec-wine
+mkdir  /data/data/com.winlator/files/imagefs/opt/x86_64-wine
+# arm64ec
+mkdir /tmp/wine-tmp
+wget ${wineArm64ecURL} || exit 1
+tar -xvf $(basename ${wineArm64ecURL}) -C /tmp/wine-tmp && rm -rf *.wcp
+mv bin /data/data/com.winlator/files/imagefs/opt/arm64ec-wine
+mv lib /data/data/com.winlator/files/imagefs/opt/arm64ec-wine
+mv share /data/data/com.winlator/files/imagefs/opt/arm64ec-wine
+rm -rf /tmp/wine-tmp/*
+# amd64
+wget ${wineAmd64URL} || exit 1
+tar -xvf $(basename ${wineAmd64URL}) -C /tmp/wine-tmp && rm -rf *.wcp
+mv bin /data/data/com.winlator/files/imagefs/opt/x86_64-wine
+mv lib /data/data/com.winlator/files/imagefs/opt/x86_64-wine
+mv share /data/data/com.winlator/files/imagefs/opt/x86_64-wine
+rm -rf /tmp/wine-tmp/*
+
+tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/imagefs-${customTag}.tzst . || exit 1
