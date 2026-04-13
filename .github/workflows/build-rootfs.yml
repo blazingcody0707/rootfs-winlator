@@ -46,11 +46,11 @@ on:
         default: "glibc2.39-"
       inputWineArm64ecURL:
         description: "输入 Wine ARM64EC 下载 URL："
-        required: true
+        required: false
         default: ""
       inputWineAmd64URL:
         description: "输入 Wine AMD64 下载 URL："
-        required: true
+        required: false
         default: ""
 
 env:

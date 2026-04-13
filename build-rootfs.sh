@@ -455,20 +455,42 @@ tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/imagefs-${customTag}-old.tzst . || e
 rm -rf /data/data/com.winlator/files/imagefs/opt/*
 mkdir  /data/data/com.winlator/files/imagefs/opt/arm64ec-wine
 mkdir  /data/data/com.winlator/files/imagefs/opt/x86_64-wine
-# arm64ec
+
+# 下载并安装 Wine（如果提供了 URL）
 mkdir /tmp/wine-tmp
-wget ${wineArm64ecURL} || exit 1
-tar -xvf $(basename ${wineArm64ecURL}) -C /tmp/wine-tmp && rm -rf *.wcp
-mv bin /data/data/com.winlator/files/imagefs/opt/arm64ec-wine
-mv lib /data/data/com.winlator/files/imagefs/opt/arm64ec-wine
-mv share /data/data/com.winlator/files/imagefs/opt/arm64ec-wine
-rm -rf /tmp/wine-tmp/*
-# amd64
-wget ${wineAmd64URL} || exit 1
-tar -xvf $(basename ${wineAmd64URL}) -C /tmp/wine-tmp && rm -rf *.wcp
-mv bin /data/data/com.winlator/files/imagefs/opt/x86_64-wine
-mv lib /data/data/com.winlator/files/imagefs/opt/x86_64-wine
-mv share /data/data/com.winlator/files/imagefs/opt/x86_64-wine
-rm -rf /tmp/wine-tmp/*
+
+# arm64ec wine
+if [[ -n "${wineArm64ecURL}" ]]; then
+  echo "下载 Wine ARM64EC..."
+  wget "${wineArm64ecURL}" || { echo "Wine ARM64EC 下载失败"; rm -rf /tmp/wine-tmp; }
+  if [[ -f $(basename "${wineArm64ecURL}") ]]; then
+    tar -xvf $(basename "${wineArm64ecURL}") -C /tmp/wine-tmp && rm -rf *.wcp
+    mv bin /data/data/com.winlator/files/imagefs/opt/arm64ec-wine 2>/dev/null || true
+    mv lib /data/data/com.winlator/files/imagefs/opt/arm64ec-wine 2>/dev/null || true
+    mv share /data/data/com.winlator/files/imagefs/opt/arm64ec-wine 2>/dev/null || true
+    rm -rf /tmp/wine-tmp/*
+    echo "Wine ARM64EC 安装完成"
+  fi
+else
+  echo "跳过 Wine ARM64EC 下载（未提供 URL）"
+fi
+
+# amd64 wine
+if [[ -n "${wineAmd64URL}" ]]; then
+  echo "下载 Wine AMD64..."
+  wget "${wineAmd64URL}" || { echo "Wine AMD64 下载失败"; rm -rf /tmp/wine-tmp; }
+  if [[ -f $(basename "${wineAmd64URL}") ]]; then
+    tar -xvf $(basename "${wineAmd64URL}") -C /tmp/wine-tmp && rm -rf *.wcp
+    mv bin /data/data/com.winlator/files/imagefs/opt/x86_64-wine 2>/dev/null || true
+    mv lib /data/data/com.winlator/files/imagefs/opt/x86_64-wine 2>/dev/null || true
+    mv share /data/data/com.winlator/files/imagefs/opt/x86_64-wine 2>/dev/null || true
+    rm -rf /tmp/wine-tmp/*
+    echo "Wine AMD64 安装完成"
+  fi
+else
+  echo "跳过 Wine AMD64 下载（未提供 URL）"
+fi
+
+rm -rf /tmp/wine-tmp
 
 tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/imagefs-${customTag}.tzst . || exit 1
