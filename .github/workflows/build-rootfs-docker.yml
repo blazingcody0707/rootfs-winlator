@@ -98,10 +98,10 @@ jobs:
           git clone --depth=1 https://github.com/Waim908/rootfs-winlator.git
  
           sudo cp rootfs-winlator/build-rootfs.sh /tmp/archlinux/tmp2
-          mv rootfs-winlator/data.tar.xz /tmp/archlinux/tmp2
-          mv rootfs-winlator/tzdata-*-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp2
-          mv rootfs-winlator/patches /tmp/archlinux/tmp2
-          mv rootfs-winlator/mangohud.tar.xz /tmp/archlinux/tmp2
+          sudo mv rootfs-winlator/data.tar.xz /tmp/archlinux/tmp2
+          sudo mv rootfs-winlator/tzdata-*-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp2
+          sudo mv rootfs-winlator/patches /tmp/archlinux/tmp2
+          sudo mv rootfs-winlator/mangohud.tar.xz /tmp/archlinux/tmp2
           # mv rootfs-winlator/lame-3.100 /tmp/archlinux/tmp2
           # 复制 ccache 缓存到 chroot 环境（如果存在）
           if [[ -f /tmp/ccache.tar.xz ]]; then
