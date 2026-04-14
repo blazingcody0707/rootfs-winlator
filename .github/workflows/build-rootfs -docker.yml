@@ -92,12 +92,12 @@ jobs:
       - name: Docker
         run: |
           mkdir /tmp/archlinux/
-          sudo docker run -itd --name arch -v /tmp/archlinux/tmp2:/tmp -v /tmp/archlinux/bin2:/bin waim908/archlinuxarm:wlt bash || { echo 容器创建失败 && exit 1;}
+          sudo docker run -itd --name arch -v /tmp/archlinux/tmp2:/tmp waim908/archlinuxarm:wlt bash || { echo 容器创建失败 && exit 1;}
           
           cd /tmp
           git clone --depth=1 https://github.com/Waim908/rootfs-winlator.git
  
-          sudo cp rootfs-winlator/build-rootfs.sh /tmp/archlinux/bin2
+          sudo cp rootfs-winlator/build-rootfs.sh /tmp/archlinux/tmp2
           mv rootfs-winlator/data.tar.xz /tmp/archlinux/tmp2
           mv rootfs-winlator/tzdata-*-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp2
           mv rootfs-winlator/patches /tmp/archlinux/tmp2
@@ -125,7 +125,7 @@ jobs:
           export wineAmd64URL=$wineAmd64URL
           EOF
 
-          sudo docker exec arch bash -x /bin/build-rootfs.sh || exit 1
+          sudo docker exec arch bash -x /tmp/build-rootfs.sh || exit 1
 
       - name: Copy ccache from docker
         run: |
