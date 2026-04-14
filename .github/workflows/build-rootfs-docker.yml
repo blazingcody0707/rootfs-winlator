@@ -111,7 +111,7 @@ jobs:
             sudo cp /tmp/ccache.tar.xz /tmp/archlinux/tmp2/
           fi
 
-          cat > /tmp/archlinux/tmp2/init.sh << EOF
+          sudo cat > /tmp/archlinux/tmp2/init.sh << EOF
           export gstVer=$gstVer
           export xzVer=$xzVer
           export xkbcommonVer=$xkbcommonVer
