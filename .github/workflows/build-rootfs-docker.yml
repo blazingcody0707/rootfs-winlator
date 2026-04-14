@@ -96,7 +96,9 @@ jobs:
           
           cd /tmp
           git clone --depth=1 https://github.com/Waim908/rootfs-winlator.git
- 
+          
+          sudo chmod 777 rootfs-winlator/*
+
           sudo cp rootfs-winlator/build-rootfs.sh /tmp/archlinux/tmp2
           sudo mv rootfs-winlator/data.tar.xz /tmp/archlinux/tmp2
           sudo mv rootfs-winlator/tzdata-*-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp2
