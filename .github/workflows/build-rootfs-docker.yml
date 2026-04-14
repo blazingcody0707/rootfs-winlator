@@ -123,6 +123,8 @@ jobs:
           export wineAmd64URL=$wineAmd64URL
           EOF
 
+          sudo chmod  777 /tmp/archlinux/tmp2/init.sh
+
           sudo docker exec arch bash -x /tmp/build-rootfs.sh || exit 1
           sudo chmod 644 /tmp/archlinux/tmp2/output/*
 
