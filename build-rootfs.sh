@@ -105,7 +105,7 @@ clean_old_depends () {
 # 使用O2是为了稳定性和性能的平衡
 
 export CC="ccache aarch64-linux-gnu-gcc"
-export CXX="ccache aarch64-linux-g++"
+export CXX="ccache aarch64-linux-gnu-g++"
 # 恢复 ccache 缓存（如果存在）
 if [[ -f /tmp/ccache.tar.xz ]]; then
   echo "恢复 ccache 缓存..."
