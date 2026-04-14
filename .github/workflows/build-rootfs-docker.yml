@@ -92,11 +92,22 @@ jobs:
       - name: Docker
         run: |
           mkdir /tmp/archlinux/
-          sudo docker run -itd --name arch -v /tmp/archlinux/tmp2:/tmp waim908/archlinuxarm:wlt bash || { echo 容器创建失败 && exit 1;}
-          
+          sudo docker run -itd --name arch \
+            -v /tmp/archlinux/tmp2:/tmp \
+            -e gstVer=$gstVer \
+            -e xzVer=$xzVer \
+            -e xkbcommonVer=$xkbcommonVer \
+            -e mangohudVer=$mangohudVer \
+            -e customTag=$customTag \
+            -e flacVer=$flacVer \
+            -e glibVer=$glibVer \
+            -e wineArm64ecURL=$wineArm64ecURL \
+            -e wineAmd64URL=$wineAmd64URL \
+            waim908/archlinuxarm:wlt bash || { echo 容器创建失败 && exit 1;}
+
           cd /tmp
           git clone --depth=1 https://github.com/Waim908/rootfs-winlator.git
-          
+
           sudo chmod 777 rootfs-winlator/*
 
           sudo cp rootfs-winlator/build-rootfs.sh /tmp/archlinux/tmp2
@@ -110,20 +121,6 @@ jobs:
             echo "复制 ccache 到 chroot 环境..."
             sudo cp /tmp/ccache.tar.xz /tmp/archlinux/tmp2/
           fi
-
-          sudo cat > /tmp/archlinux/tmp2/init.sh << EOF
-          export gstVer=$gstVer
-          export xzVer=$xzVer
-          export xkbcommonVer=$xkbcommonVer
-          export mangohudVer=$mangohudVer
-          export customTag=$customTag
-          export flacVer=$flacVer
-          export glibVer=$glibVer
-          export wineArm64ecURL=$wineArm64ecURL
-          export wineAmd64URL=$wineAmd64URL
-          EOF
-
-          sudo chmod  777 /tmp/archlinux/tmp2/init.sh
 
           sudo docker exec arch bash -x /tmp/build-rootfs.sh || exit 1
           sudo chmod 644 /tmp/archlinux/tmp2/output/*

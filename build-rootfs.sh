@@ -126,12 +126,17 @@ export CFLAGS="-O2 -march=armv8-a -mtune=generic -flto=auto -pipe -ftree-vectori
 export CXXFLAGS="-O2 -march=armv8-a -mtune=generic -flto=auto -pipe -ftree-vectorize"
 export LDFLAGS="-O2 -flto=auto -s"
 
-if [[ ! -f /tmp/init.sh ]]; then
-  exit 1
-else
-  cat /tmp/init.sh
-  source /tmp/init.sh
-fi
+# 环境变量已通过 docker -e 参数传入，直接检查关键变量
+echo "环境变量检查:"
+echo "gstVer=$gstVer"
+echo "xzVer=$xzVer"
+echo "xkbcommonVer=$xkbcommonVer"
+echo "mangohudVer=$mangohudVer"
+echo "customTag=$customTag"
+echo "flacVer=$flacVer"
+echo "glibVer=$glibVer"
+echo "wineArm64ecURL=$wineArm64ecURL"
+echo "wineAmd64URL=$wineAmd64URL"
 # pacman -R --noconfirm flac
 create_imagefs_dir() {
   mkdir -p /data/data/com.winlator/files/imagefs/
