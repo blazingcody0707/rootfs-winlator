@@ -89,29 +89,31 @@ jobs:
             echo "ccache 缓存不存在，将创建新的缓存"
           fi
 
-      - name: BCC
+      - name: Docker
         run: |
-          aria2c -s16 -x16 https://github.com/Waim908/BCC/releases/download/wlt-bcc-20251111/wlt-bcc.tar.xz || exit 1
-          tar xf wlt-bcc.tar.xz
-
-          git clone https://github.com/Waim908/rootfs-winlator.git
-          sudo cp rootfs-winlator-glibc/build-rootfs.sh /tmp/archlinux/bin
-          mv rootfs-winlator-glibc/data.tar.xz /tmp/archlinux/tmp
-          mv rootfs-winlator-glibc/tzdata-*-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp
-          mv rootfs-winlator-glibc/patches /tmp/archlinux/tmp
-          mv rootfs-winlator-glibc/mangohud.tar.xz /tmp/archlinux/tmp
-          # mv rootfs-winlator-glibc/lame-3.100 /tmp/archlinux/tmp
+          mkdir /tmp/archlinux/
+          sudo docker run -itd --name arch -v /tmp/archlinux/tmp2:/tmp -v /tmp/archlinux/bin2:/bin waim908/archlinuxarm:wlt bash || { echo 容器创建失败 && exit 1;}
+          
+          cd /tmp
+          git clone --depth=1 https://github.com/Waim908/rootfs-winlator.git
+ 
+          sudo cp rootfs-winlator/build-rootfs.sh /tmp/archlinux/bin2
+          mv rootfs-winlator/data.tar.xz /tmp/archlinux/tmp2
+          mv rootfs-winlator/tzdata-*-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp2
+          mv rootfs-winlator/patches /tmp/archlinux/tmp2
+          mv rootfs-winlator/mangohud.tar.xz /tmp/archlinux/tmp2
+          # mv rootfs-winlator/lame-3.100 /tmp/archlinux/tmp2
           # 复制 ccache 缓存到 chroot 环境（如果存在）
           if [[ -f /tmp/ccache.tar.xz ]]; then
             echo "复制 ccache 到 chroot 环境..."
-            sudo cp /tmp/ccache.tar.xz /tmp/archlinux/tmp/
+            sudo cp /tmp/ccache.tar.xz /tmp/archlinux/tmp2/
           fi
-          sudo chmod +x /tmp/archlinux/bin/build-rootfs.sh
-          # sudo chmod 777 /tmp/archlinux/tmp
-          # cd /tmp/archlinux/tmp
+          sudo chmod +x /tmp/archlinux/bin2/build-rootfs.sh
+          # sudo chmod 777 /tmp/archlinux/tmp2
+          # cd /tmp/archlinux/tmp2
           # git clone -b ${gstVer} https://gitlab.freedesktop.org/gstreamer/gstreamer.git gstreamer-src
           # cd /tmp
-          cat > /tmp/archlinux/tmp/init.sh << EOF
+          cat > /tmp/archlinux/tmp2/init.sh << EOF
           export gstVer=$gstVer
           export xzVer=$xzVer
           export xkbcommonVer=$xkbcommonVer
@@ -121,33 +123,20 @@ jobs:
           export glibVer=$glibVer
           export wineArm64ecURL=$wineArm64ecURL
           export wineAmd64URL=$wineAmd64URL
-          #export monoVer=$monoVer
-          #export geckoVer=$geckoVer
           EOF
-          # echo "export gstVer=$gstVer" > /tmp/archlinux/tmp/init.sh
-          # echo "export xzVer=$xzVer" >> /tmp/archlinux/tmp/init.sh
-          # echo "export vorbisVer=$vorbisVer" >> /tmp/archlinux/tmp/init.sh
-          sudo mount --bind /proc archlinux/proc
-          sudo mount --bind /sys archlinux/sys
-          sudo mount --bind /dev archlinux/dev
-          if ! sudo chroot /tmp/archlinux /bin/build-rootfs.sh; then
-            echo "失败"
-            exit 1
-          fi
-          sudo umount -l archlinux/dev
-          sudo umount -l archlinux/sys
-          sudo umount -l archlinux/proc
 
-      - name: Copy ccache from chroot
+          sudo docker exec arch bash -x /bin/build-rootfs.sh || exit 1
+
+      - name: Copy ccache from docker
         run: |
-          # 从 chroot 环境中复制打包好的 ccache
-          if [[ -f /tmp/archlinux/tmp/ccache.tar.xz ]]; then
+          # 从 docker 环境中复制打包好的 ccache
+          if [[ -f /tmp/archlinux/tmp2/ccache.tar.xz ]]; then
             echo "复制 ccache 从 chroot 环境..."
-            sudo cp /tmp/archlinux/tmp/ccache.tar.xz /tmp/ccache-new.tar.xz
+            sudo cp /tmp/archlinux/tmp2/ccache.tar.xz /tmp/ccache-new.tar.xz
             sudo chmod 777 /tmp/ccache-new.tar.xz
             ls -lh /tmp/ccache-new.tar.xz
           else
-            echo "警告: chroot 环境中没有找到 ccache.tar.xz"
+            echo "警告: docker 环境中没有找到 ccache.tar.xz"
           fi
 
       - name: Save ccache
@@ -183,11 +172,11 @@ jobs:
               wine arm64:
 
               more info look '_version_.txt' for imagefs
-              Rename to `imagefs.txz` put to apk/assets/imagefs.txz
+              Rename to `imagefs.tzst` put to apk/assets/imagefs.tzst
 
           files: |
-            /tmp/archlinux/tmp/output/output-lite-${{ github.event.inputs.inputCustomTag }}.tar.xz
-            /tmp/archlinux/tmp/output/output-full-${{ github.event.inputs.inputCustomTag }}.tar.xz
-            /tmp/archlinux/tmp/output/imagefs-${{ github.event.inputs.inputCustomTag }}.tzst
+            /tmp/archlinux/tmp2/output/output-lite-${{ github.event.inputs.inputCustomTag }}.tar.xz
+            /tmp/archlinux/tmp2/output/output-full-${{ github.event.inputs.inputCustomTag }}.tar.xz
+            /tmp/archlinux/tmp2/output/imagefs-${{ github.event.inputs.inputCustomTag }}.tzst
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
