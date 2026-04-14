@@ -102,17 +102,13 @@ jobs:
           sudo mv rootfs-winlator/tzdata-*-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp2
           sudo mv rootfs-winlator/patches /tmp/archlinux/tmp2
           sudo mv rootfs-winlator/mangohud.tar.xz /tmp/archlinux/tmp2
-          # mv rootfs-winlator/lame-3.100 /tmp/archlinux/tmp2
-          # 复制 ccache 缓存到 chroot 环境（如果存在）
+
+          # 复制 ccache 缓存
           if [[ -f /tmp/ccache.tar.xz ]]; then
             echo "复制 ccache 到 chroot 环境..."
             sudo cp /tmp/ccache.tar.xz /tmp/archlinux/tmp2/
           fi
-          sudo chmod +x /tmp/archlinux/bin2/build-rootfs.sh
-          # sudo chmod 777 /tmp/archlinux/tmp2
-          # cd /tmp/archlinux/tmp2
-          # git clone -b ${gstVer} https://gitlab.freedesktop.org/gstreamer/gstreamer.git gstreamer-src
-          # cd /tmp
+
           cat > /tmp/archlinux/tmp2/init.sh << EOF
           export gstVer=$gstVer
           export xzVer=$xzVer
@@ -126,6 +122,7 @@ jobs:
           EOF
 
           sudo docker exec arch bash -x /tmp/build-rootfs.sh || exit 1
+          sudo chmod 644 /tmp/archlinux/tmp2/output/*
 
       - name: Copy ccache from docker
         run: |
