@@ -5,7 +5,9 @@
 
 Winlator glibc 定制版 imagefs，用于补全原版 Winlator 的项目，适用于 [moze30/winlator-glibc](https://github.com/moze30/winlator-glibc)。
 
-# Status
+# Actions Status
+
+[![Winlator Rootfs Build (use Docker)](https://github.com/Waim908/rootfs-winlator/actions/workflows/build-rootfs%20-docker.yml/badge.svg)](https://github.com/Waim908/rootfs-winlator/actions/workflows/build-rootfs%20-docker.yml)
 
 [![Winlator Rootfs Build (use BCC)](https://github.com/Waim908/rootfs-winlator/actions/workflows/build-rootfs.yml/badge.svg)](https://github.com/Waim908/rootfs-winlator/actions/workflows/build-rootfs.yml)
 
