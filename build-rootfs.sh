@@ -454,8 +454,6 @@ rm -rf /data/data/com.winlator/files/imagefs/usr/lib/gstreamer-1.0/
 #strip_all
 #######
 tar -xf /tmp/output/output-full-${customTag}.tar.xz -C /data/data/com.winlator/files/imagefs/
-#create_ver_txt
-tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/imagefs-${customTag}-old.tzst . || exit 1
 
 rm -rf /data/data/com.winlator/files/imagefs/opt/*
 mkdir  /data/data/com.winlator/files/imagefs/opt/arm64ec-wine
@@ -463,11 +461,12 @@ mkdir  /data/data/com.winlator/files/imagefs/opt/x86_64-wine
 
 # 下载并安装 Wine（如果提供了 URL）
 mkdir /tmp/wine-tmp
+cd /tmp/wine-tmp
 
 # arm64ec wine
 if [[ -n "${wineArm64ecURL}" ]]; then
   echo "下载 Wine ARM64EC..."
-  wget "${wineArm64ecURL}" || { echo "Wine ARM64EC 下载失败"; rm -rf /tmp/wine-tmp; }
+  wget "${wineArm64ecURL}" || { echo "Wine ARM64EC 下载失败"; exit 1;}
   if [[ -f $(basename "${wineArm64ecURL}") ]]; then
     tar -xvf $(basename "${wineArm64ecURL}") -C /tmp/wine-tmp && rm -rf *.wcp
     mv bin /data/data/com.winlator/files/imagefs/opt/arm64ec-wine 2>/dev/null || true
@@ -483,7 +482,7 @@ fi
 # amd64 wine
 if [[ -n "${wineAmd64URL}" ]]; then
   echo "下载 Wine AMD64..."
-  wget "${wineAmd64URL}" || { echo "Wine AMD64 下载失败"; rm -rf /tmp/wine-tmp; }
+  wget "${wineAmd64URL}" || { echo "Wine AMD64 下载失败"; exit 1;}
   if [[ -f $(basename "${wineAmd64URL}") ]]; then
     tar -xvf $(basename "${wineAmd64URL}") -C /tmp/wine-tmp && rm -rf *.wcp
     mv bin /data/data/com.winlator/files/imagefs/opt/x86_64-wine 2>/dev/null || true
@@ -497,5 +496,7 @@ else
 fi
 
 rm -rf /tmp/wine-tmp
+
+cd /data/data/com.winlator/files/imagefs/
 
 tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/imagefs-${customTag}.tzst . || exit 1
