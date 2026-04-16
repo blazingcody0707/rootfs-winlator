@@ -78,7 +78,6 @@ jobs:
           path: /tmp/ccache.tar.xz
           key: ccache-${{ github.event.inputs.inputGstVersion }}-${{ github.event.inputs.inputGlibVersion }}-${{ github.event.inputs.inputXzVersion }}
           restore-keys: |
-            ccache-${{ github.event.inputs.inputGstVersion }}-
             ccache-
 
       - name: Check ccache exists
@@ -104,7 +103,7 @@ jobs:
             -e glibVer=$glibVer \
             -e wineArm64ecURL=$wineArm64ecURL \
             -e wineAmd64URL=$wineAmd64URL \
-            waim908/archlinuxarm:wlt bash || { echo 容器创建失败 && exit 1;}
+            waim908/ubuntuarm:wlt bash || { echo 容器创建失败 && exit 1;}
 
           cd /tmp
           git clone --depth=1 https://github.com/Waim908/rootfs-winlator.git
@@ -143,7 +142,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: /tmp/ccache-new.tar.xz
-          key: ccache-${{ github.event.inputs.inputGstVersion }}-${{ github.event.inputs.inputGlibVersion }}-${{ github.event.inputs.inputXzVersion }}-${{ github.run_id }}
+          key: ccache-${{ github.run_id }}
 
       # - name: Package
       #   run: |

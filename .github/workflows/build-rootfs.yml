@@ -75,10 +75,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: /tmp/ccache.tar.xz
-          key: ccache-${{ github.event.inputs.inputGstVersion }}-${{ github.event.inputs.inputGlibVersion }}-${{ github.event.inputs.inputXzVersion }}
-          restore-keys: |
-            ccache-${{ github.event.inputs.inputGstVersion }}-
-            ccache-
+          key: ccache-
 
       - name: Check ccache exists
         run: |
@@ -155,7 +152,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: /tmp/ccache-new.tar.xz
-          key: ccache-${{ github.event.inputs.inputGstVersion }}-${{ github.event.inputs.inputGlibVersion }}-${{ github.event.inputs.inputXzVersion }}-${{ github.run_id }}
+          key: ccache-${{ github.run_id }}
 
       # - name: Package
       #   run: |
