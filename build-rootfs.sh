@@ -1,3 +1,7 @@
+command -v wget || {
+  apt install wget -y || { apt install -y wget || exit 1;}
+}
+
 extra_pkg=(
   7zip
 )
@@ -65,9 +69,6 @@ patchelf_fix() {
 strip_all() { find . -type f -exec file {} \; | grep ELF | cut -d: -f1 | xargs -r strip; }
 
 wget_source() {
-  command -v wget || {
-	apt install wget -y || exit 1
-  }
   local target_package=$(basename $1)
   wget $1 || { echo "下载失败" && exit 1;}
   local target_dir=$(tar tf $target_package | head -n1)
