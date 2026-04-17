@@ -188,11 +188,15 @@ flex
 bison
 libdrm-dev
 libasound2-dev
-
+glslang-dev
+libmpg123-dev
+pkg-config
+libxcb-xkb-dev
+autotools-dev
 )
 ```
 
-使用apt或者apt-fast安装就行了
+使用apt或者apt-fast安装```${allPkgs[@]}```就行了
 
 <a id='others'></a>
 ## CA 证书支持

@@ -12,11 +12,11 @@ on:
       inputGstVersion:
         description: "输入gstreamer版本："
         required: true
-        default: "1.28.1"
+        default: "1.28.2"
       inputXzVersion:
         description: "输入xz版本："
         required: true
-        default: "v5.8.1"
+        default: "v5.8.3"
       inputFlacVersion:
         description: "输入flac版本："
         required: true
@@ -24,7 +24,7 @@ on:
       inputXkbcommonVersion:
         description: "输入xkbcommon的版本："
         required: true
-        default: "xkbcommon-1.13.0"
+        default: "xkbcommon-1.13.1"
       inputMangohudVersion:
         description: "输入MangoHud版本："
         required: true
@@ -79,6 +79,7 @@ jobs:
           key: ccache-${{ github.event.inputs.inputGstVersion }}-${{ github.event.inputs.inputGlibVersion }}-${{ github.event.inputs.inputXzVersion }}
           restore-keys: |
             ccache-
+            ccache-1.28.1-2.86.3-v5.8.1
 
       - name: Check ccache exists
         run: |
