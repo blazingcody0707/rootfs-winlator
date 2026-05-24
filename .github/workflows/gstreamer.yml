@@ -23,7 +23,7 @@ jobs:
           repository: GStreamer/gstreamer
           path: gstreamer-source
           # 可选: 指定分支或标签，例如 '1.24'
-          ref: '1.28.3'
+          ref: '${{ inputs.release_tag }}'
 
       - name: Run build inside container
         id: build
