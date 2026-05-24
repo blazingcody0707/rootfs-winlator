@@ -31,28 +31,9 @@ jobs:
 
           mv gstreamer-source /tmp/docker/
 
-          cat > /tmp/docker/build_script.sh << EOF
-          set -e
-          cd /workspace/gstreamer-source
+          cd /tmp/docker
 
-          export CFLAGS="-O3 -march=armv8-a -mtune=generic -flto=auto -pipe -ftree-vectorize"
-          export CXXFLAGS="-O3 -march=armv8-a -mtune=generic -flto=auto -pipe -ftree-vectorize"
-          export LDFLAGS="-O3 -flto=auto -s"
-
-          # 配置
-          meson setup builddir --prefix=/data/data/com.winlator/files/imagefs/usr --libdir=/data/data/com.winlator/files/imagefs/usr/lib -Dgst-full-target-type=shared_library -Dintrospection=disabled -Dgst-full-libraries=app,video,player -Dbase=enabled -Dgood=enabled -Dbad=enabled -Dugly=enabled -Dlibav=enabled -Dtests=disabled -Dexamples=disabled -Dges=disabled -Dpython=disabled -Ddevtools=disabled -Drtsp_server=disabled -Dlibnice=disabled -Dgtk=disabled -Ddoc=disabled -Dgstreamer:check=disabled -Dgstreamer:benchmarks=disabled -Dgstreamer:libunwind=disabled -Dgstreamer:libdw=disabled -Dgstreamer:bash-completion=disabled -Dgst-plugins-base:tcp=disabled -Dgst-plugins-base:typefind=disabled -Dgst-plugins-base:gio=disabled -Dgst-plugins-base:examples=disabled -Dgst-plugins-base:alsa=enabled -Dgst-plugins-base:pango=disabled -Dgst-plugins-base:x11=enabled -Dgst-plugins-base:gl=disabled -Dgst-plugins-base:opus=disabled -Dgst-plugins-good:cairo=disabled -Dgst-plugins-good:gdk-pixbuf=disabled -Dgst-plugins-good:oss=disabled -Dgst-plugins-good:oss4=disabled -Dgst-plugins-good:v4l2=disabled -Dgst-plugins-good:aalib=disabled -Dgst-plugins-good:jack=disabled -Dgst-plugins-good:pulse=enabled -Dgst-plugins-good:adaptivedemux2=disabled -Dgst-plugins-good:libcaca=disabled -Dgst-plugins-good:mpg123=enabled -Dgst-plugins-good:multifile=disabled -Dgst-plugins-good:rtp=disabled -Dgst-plugins-good:rtpmanager=disabled -Dgst-plugins-good:rtsp=disabled -Dgst-plugins-good:soup=disabled -Dgst-plugins-good:udp=disabled -Dgst-plugins-bad:androidmedia=disabled -Dgst-plugins-bad:rtmp=disabled -Dgst-plugins-bad:shm=disabled -Dgst-plugins-bad:zbar=disabled -Dgst-plugins-bad:webp=disabled -Dgst-plugins-bad:kms=disabled -Dgst-plugins-bad:vulkan=disabled -Dgst-plugins-bad:dash=disabled -Dgst-plugins-bad:analyticsoverlay=disabled -Dgst-plugins-bad:nvcodec=disabled -Dgst-plugins-bad:uvch264=disabled -Dgst-plugins-bad:v4l2codecs=disabled -Dgst-plugins-bad:udev=disabled -Dgst-plugins-bad:libde265=disabled -Dgst-plugins-bad:smoothstreaming=disabled -Dgst-plugins-bad:fluidsynth=disabled -Dgst-plugins-bad:inter=disabled -Dgst-plugins-bad:x11=enabled -Dgst-plugins-bad:gl=disabled -Dgst-plugins-bad:wayland=disabled -Dgst-plugins-bad:openh264=disabled -Dgst-plugins-bad:hip=disabled -Dgst-plugins-bad:aja=disabled -Dgst-plugins-bad:aes=disabled -Dgst-plugins-bad:dtls=disabled -Dgst-plugins-bad:hls=disabled -Dgst-plugins-bad:curl=disabled -Dgst-plugins-bad:opus=disabled -Dgst-plugins-bad:webrtc=disabled -Dgst-plugins-bad:webrtcdsp=disabled -Dgst-plugins-bad:debugutils=disabled -Dgst-plugins-bad:librfb=disabled -Dgst-plugins-bad:rist=disabled -Dgst-plugins-bad:rtmp2=disabled -Dgst-plugins-bad:rtp=disabled -Dgst-plugins-bad:srtp=disabled -Dgst-plugins-bad:sdp=disabled -Dgst-plugins-bad:tensordecoders=disabled -Dgst-plugins-bad:unixfd=disabled -Dgst-plugins-bad:cuda-nvmm=disabled -Dgst-plugins-bad:fluidsynth=disabled -Dgst-plugins-ugly:asfdemux=disabled -Dpackage-origin="builtin-https://github.com/Waim908/rootfs-winlator"
-
-          # 编译
-          meson compile -C builddir
-
-          # 安装到临时目录
-          DESTDIR=/workspace/install meson install -C builddir
-
-          # 打包
-          cd /workspace
-          tar czf gstreamer-full-${{ github.event.inputs.release_tag }}.tar.gz -C install .
-
-          EOF
+          wget https://raw.githubusercontent.com/Waim908/rootfs-winlator/main/build_script.sh
 
           chmod +x /tmp/docker/build_script.sh
 
