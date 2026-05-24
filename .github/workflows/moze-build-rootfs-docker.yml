@@ -1,4 +1,4 @@
-name: Winlator Rootfs Build (use Docker)
+name: Moze Winlator Rootfs Build (use Docker)
 
 permissions:
   contents: write
