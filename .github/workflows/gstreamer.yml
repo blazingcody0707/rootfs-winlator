@@ -31,15 +31,12 @@ jobs:
           set -e
           cd /workspace/gstreamer-source
 
-          # 定义 meson 通用参数
-          export meson_general_arg="--prefix=/data/data/com.winlator/files/imagefs/usr --libdir=/data/data/com.winlator/files/imagefs/usr/lib"
-
-          export CFLAGS="-O2 -march=armv8-a -mtune=generic -flto=auto -pipe -ftree-vectorize"
-          export CXXFLAGS="-O2 -march=armv8-a -mtune=generic -flto=auto -pipe -ftree-vectorize"
-          export LDFLAGS="-O2 -flto=auto -s"
+          export CFLAGS="-O3 -march=armv8-a -mtune=generic -flto=auto -pipe -ftree-vectorize"
+          export CXXFLAGS="-O3 -march=armv8-a -mtune=generic -flto=auto -pipe -ftree-vectorize"
+          export LDFLAGS="-O3 -flto=auto -s"
 
           # 配置
-          meson setup builddir "$meson_general_arg" \
+          meson setup builddir --prefix=/data/data/com.winlator/files/imagefs/usr --libdir=/data/data/com.winlator/files/imagefs/usr/lib \
             -Dgst-full-target-type=shared_library \
             -Dintrospection=disabled \
             -Dgst-full-libraries=app,video,player \
