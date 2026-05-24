@@ -26,8 +26,10 @@ jobs:
       - name: Run build inside container
         id: build
         run: |
-          # 生成构建脚本
+
           mkdir -p /tmp/docker
+
+          mv gstreamer-source /tmp/docker/
 
           cat > /tmp/docker/build_script.sh << EOF
           set -e
