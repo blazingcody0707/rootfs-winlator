@@ -27,7 +27,7 @@ jobs:
         id: build
         run: |
           # 生成构建脚本
-          cat > build_script.sh << 'EOF'
+          cat > build_script.sh << EOF
           set -e
           cd /workspace/gstreamer-source
 
@@ -47,6 +47,7 @@ jobs:
           # 打包
           cd /workspace
           tar czf gstreamer-full-${{ github.event.inputs.release_tag }}.tar.gz -C install .
+          
           EOF
 
           chmod +x build_script.sh
