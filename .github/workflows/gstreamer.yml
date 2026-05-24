@@ -35,6 +35,8 @@ jobs:
 
           wget https://raw.githubusercontent.com/Waim908/rootfs-winlator/master/gstreamer.sh
 
+          mv gstreamer.sh build_script.sh
+
           chmod +x /tmp/docker/build_script.sh
 
 
