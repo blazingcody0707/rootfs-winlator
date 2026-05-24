@@ -150,7 +150,7 @@ jobs:
           docker run --rm \
             -v ${{ github.workspace }}:/workspace \
             waim908/ubuntuarm2404:wlt \
-            /bin/bash /workspace/build_script.sh
+            /bin/bash -x /workspace/build_script.sh
 
           # 设置输出变量（直接使用 release_tag）
           echo "ARTIFACT_PATH=${{ github.workspace }}/gstreamer-full-${{ github.event.inputs.release_tag }}.tar.gz" >> $GITHUB_OUTPUT
