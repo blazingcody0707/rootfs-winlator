@@ -51,21 +51,19 @@ jobs:
 
           chmod +x build_script.sh
 
+          mkdir -p /tmp/docker
           # 运行容器
           docker run --rm \
-            -v ${{ github.workspace }}:/workspace \
+            -v /tmp/docker:/workspace \
             waim908/ubuntuarm2404:wlt \
             /bin/bash -x /workspace/build_script.sh
-
-          # 设置输出变量（直接使用 release_tag）
-          echo "ARTIFACT_PATH=${{ github.workspace }}/gstreamer-full-${{ github.event.inputs.release_tag }}.tar.gz" >> $GITHUB_OUTPUT
 
       - name: Create Release and Upload Artifact
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.release_tag }}
           name: ${{ github.event.inputs.release_title }}
-          files: ${{ steps.build.outputs.ARTIFACT_PATH }}
+          files: /tmp/docker/gstreamer-full-${{ github.event.inputs.release_tag }}.tar.gz
           draft: false
           prerelease: false
         env:
