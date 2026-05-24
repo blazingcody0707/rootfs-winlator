@@ -14,8 +14,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
-    # 使用 QEMU 模拟 ARM64 环境以运行容器
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout GStreamer source code
         uses: actions/checkout@v4
