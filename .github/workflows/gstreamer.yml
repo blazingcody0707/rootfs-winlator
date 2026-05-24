@@ -37,8 +37,6 @@ jobs:
             # 定义 meson 通用参数数组（可根据需要修改）
             export meson_general_arg="--prefix=/data/data/com.winlator/files/imagefs/usr --libdir=/data/data/com.winlator/files/imagefs/usr/lib"
 
-            echo "meson_general_arg=${meson_general_arg[*]}"
-
             export CFLAGS="-O2 -march=armv8-a -mtune=generic -flto=auto -pipe -ftree-vectorize"
             export CXXFLAGS="-O2 -march=armv8-a -mtune=generic -flto=auto -pipe -ftree-vectorize"
             export LDFLAGS="-O2 -flto=auto -s"
