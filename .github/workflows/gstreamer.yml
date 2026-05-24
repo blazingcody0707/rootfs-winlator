@@ -62,9 +62,17 @@ jobs:
             -Dgstreamer:libunwind=disabled \
             -Dgstreamer:libdw=disabled \
             -Dgstreamer:bash-completion=disabled \
+            -Dgst-plugins-base:doc=disabled \
             -Dgst-plugins-base:tcp=disabled \
             -Dgst-plugins-base:typefind=disabled \
             -Dgst-plugins-base:gio=disabled \
+            -Dgst-plugins-base:examples=disabled \
+            -Dgst-plugins-base:alsa=enabled \
+            -Dgst-plugins-base:pango=disabled \
+            -Dgst-plugins-base:x11=enabled \
+            -Dgst-plugins-base:gl=disabled \
+            -Dgst-plugins-base:opus=disabled \
+            -Dgst-plugibs-good:doc=disabled \
             -Dgst-plugins-good:cairo=disabled \
             -Dgst-plugins-good:gdk-pixbuf=disabled \
             -Dgst-plugins-good:oss=disabled \
@@ -82,12 +90,7 @@ jobs:
             -Dgst-plugins-good:rtsp=disabled \
             -Dgst-plugins-good:soup=disabled \
             -Dgst-plugins-good:udp=disabled \
-            -Dgst-plugins-base:examples=disabled \
-            -Dgst-plugins-base:alsa=enabled \
-            -Dgst-plugins-base:pango=disabled \
-            -Dgst-plugins-base:x11=enabled \
-            -Dgst-plugins-base:gl=disabled \
-            -Dgst-plugins-base:opus=disabled \
+            -Dgst-plugins-bad:doc=disabled \
             -Dgst-plugins-bad:androidmedia=disabled \
             -Dgst-plugins-bad:rtmp=disabled \
             -Dgst-plugins-bad:shm=disabled \
@@ -129,6 +132,7 @@ jobs:
             -Dgst-plugins-bad:unixfd=disabled \
             -Dgst-plugins-bad:cuda-nvmm=disabled \
             -Dgst-plugins-bad:fluidsynth=disabled \
+            -Dgst-plugins-ugly:doc=disabled \
             -Dgst-plugins-ugly:asfdemux=disabled \
             -Dpackage-origin="builtin-https://github.com/Waim908/rootfs-winlator"
 
