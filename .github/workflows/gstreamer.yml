@@ -35,7 +35,7 @@ jobs:
             cd /workspace/gstreamer-source
 
             # 定义 meson 通用参数数组（可根据需要修改）
-            meson_general_arg=(--prefix=/data/data/com.winlator/files/imagefs/usr --libdir=/data/data/com.winlator/files/imagefs/usr/lib)
+            export meson_general_arg="--prefix=/data/data/com.winlator/files/imagefs/usr --libdir=/data/data/com.winlator/files/imagefs/usr/lib"
 
             echo "meson_general_arg=${meson_general_arg[*]}"
 
@@ -44,7 +44,7 @@ jobs:
             export LDFLAGS="-O2 -flto=auto -s"
 
             # 执行 meson 配置
-            meson setup builddir "${meson_general_arg[@]}" \
+            meson setup builddir "$meson_general_arg" \
               -Dgst-full-target-type=shared_library \
               -Dintrospection=disabled \
               -Dgst-full-libraries=app,video,player \
