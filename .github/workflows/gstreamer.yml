@@ -33,7 +33,7 @@ jobs:
 
           cd /tmp/docker
 
-          wget https://raw.githubusercontent.com/Waim908/rootfs-winlator/main/build_script.sh
+          wget https://raw.githubusercontent.com/Waim908/rootfs-winlator/main/gstreamer.sh
 
           chmod +x /tmp/docker/build_script.sh
 
