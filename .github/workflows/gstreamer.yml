@@ -27,7 +27,9 @@ jobs:
         id: build
         run: |
           # 生成构建脚本
-          cat > build_script.sh << EOF
+          mkdir -p /tmp/docker
+
+          cat > /tmp/docker/build_script.sh << EOF
           set -e
           cd /workspace/gstreamer-source
 
@@ -47,12 +49,12 @@ jobs:
           # 打包
           cd /workspace
           tar czf gstreamer-full-${{ github.event.inputs.release_tag }}.tar.gz -C install .
-          
+
           EOF
 
-          chmod +x build_script.sh
+          chmod +x /tmp/docker/build_script.sh
 
-          mkdir -p /tmp/docker
+
           # 运行容器
           docker run --rm \
             -v /tmp/docker:/workspace \
