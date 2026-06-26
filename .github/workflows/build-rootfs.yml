@@ -91,7 +91,7 @@ jobs:
           aria2c -s16 -x16 https://github.com/Waim908/BCC/releases/download/wlt-bcc-20251111/wlt-bcc.tar.xz || exit 1
           tar xf wlt-bcc.tar.xz
 
-          git clone https://github.com/Waim908/rootfs-winlator.git
+          git clone https://github.com/blazingcody0707/rootfs-winlator.git
           sudo cp rootfs-winlator-glibc/build-rootfs.sh /tmp/archlinux/bin
           mv rootfs-winlator-glibc/data.tar.xz /tmp/archlinux/tmp
           mv rootfs-winlator-glibc/tzdata-*-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp
