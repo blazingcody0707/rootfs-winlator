@@ -1,7 +1,7 @@
 command -v wget || {
   apt install wget xfce4 xfce4-goodies dbus-x11 -y || { apt install -y wget xfce4 xfce4-goodies dbus-x11 || exit 1;}
 }
-
+apt install xfce4 xfce4-goodies dbus-x11
 extra_pkg=(
   7zip
 xfce4
