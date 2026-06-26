@@ -88,7 +88,7 @@ jobs:
 
       - name: BCC
         run: |
-          aria2c -s16 -x16 https://github.com/Waim908/BCC/releases/download/wlt-bcc-20251111/wlt-bcc.tar.xz || exit 1
+          aria2c -s16 -x16 https://github.com/blazingcody0707/BCC/releases/download/wlt-bcc-latest/wlt-bcc.tar.xz || exit 1
           tar xf wlt-bcc.tar.xz
 
           git clone https://github.com/blazingcody0707/rootfs-winlator.git
