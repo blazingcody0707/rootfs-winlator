@@ -124,7 +124,7 @@ jobs:
             sudo cp /tmp/ccache.tar.xz /tmp/archlinux/tmp2/
           fi
 
-          sudo docker exec arch bash -x /tmp/build-rootfs.sh || exit 1
+          sudo docker exec arch bash  /tmp/build-rootfs.sh || exit 1
           sudo chmod 644 /tmp/archlinux/tmp2/output/*
 
       - name: Copy ccache from docker
