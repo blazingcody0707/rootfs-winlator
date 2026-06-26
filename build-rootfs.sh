@@ -435,7 +435,8 @@ cd /tmp
 rm -rf /data/data/com.winlator/files/imagefs/
 create_imagefs_dir
 tar -xf imagefs.txz -C /data/data/com.winlator/files/imagefs/
-apt update && apt install xfce4 xfce4-goodies dbus-x11 -y
+sudo rm -rf /var/lib/apt/lists/*
+apt update && apt install -y --fix-missing xfce4 xfce4-goodies dbus-x11 
 cd /data/data/com.winlator/files/imagefs/
 ##############
 #clean_old_depends
