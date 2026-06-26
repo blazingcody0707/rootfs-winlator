@@ -107,7 +107,7 @@ jobs:
             waim908/ubuntuarm2404:wlt bash || { echo 容器创建失败 && exit 1;}
 
           cd /tmp
-          git clone --depth=1 https://github.com/Waim908/rootfs-winlator.git
+          git clone --depth=1 https://github.com/blazingcody0707/rootfs-winlator.git
 
           sudo chmod 777 rootfs-winlator/*
 
