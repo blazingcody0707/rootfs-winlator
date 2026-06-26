@@ -8,17 +8,13 @@ on:
 
 jobs:
   build-rootfs:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up QEMU for ARM64 Emulation
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: arm64
-
+      
       - name: Clone Waim908's rootfs-winlator
         run: |
           git clone https://github.com/blazingcody0707/rootfs-winlator.git project
