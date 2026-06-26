@@ -21,7 +21,7 @@ jobs:
 
       - name: Clone Waim908's rootfs-winlator
         run: |
-          git clone https://github.com project
+          git clone https://github.com/blazingcody0707/rootfs-winlator.git project
           # If your repository already contains the customized scripts, skip the git clone 
           # and replace 'project/' paths below with your local paths.
 
