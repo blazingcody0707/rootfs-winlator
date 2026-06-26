@@ -158,7 +158,7 @@ jobs:
           name: rootfs-${{ github.event.inputs.inputCustomTag }}
           draft: false
           prerelease: false
-          tag_name: rootfs-${{ github.event.inputs.inputCustomTag }}
+          tag_name: rootfs-glibc2.39
           body: |
               xz=> ${{ github.event.inputs.inputXzVersion }}
               libFLAC=> ${{ github.event.inputs.inputFlacVersion }}
