@@ -149,7 +149,7 @@ jobs:
       # - name: Package
       #   run: |
       #     cd /tmp/archlinux/data/data/com.termux/files/usr
-      #     apt install xfce4 xfce4-goodies dbus-x11 -y
+      #     apt update && apt install xfce4 xfce4-goodies dbus-x11 -y
       #     tar -I "xz -T$(nproc)" -cvf /tmp/gstreamer-${gstVer}.tar.xz glibc/
 
       - name: Create Release
