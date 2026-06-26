@@ -160,7 +160,7 @@ create_imagefs_dir() {
 }
 create_imagefs_dir
 cd /tmp
-if ! wget https://github.com/Waim908/rootfs-winlator/releases/download/rootfs-ori-7.1.5/imagefs.txz; then
+if ! wget https://github.com/Waim908/rootfs-winlator/releases/download/v2.0-rc2/imagefs.tzst; then
   exit 1
 fi
 #tar -xf imagefs.txz -C /data/data/com.winlator/files/imagefs/
