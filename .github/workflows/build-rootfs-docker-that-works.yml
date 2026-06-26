@@ -156,4 +156,16 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: production-build       # The name of the downloadable package
-          path: output/
+          path: /tmp/archlinux/tmp2/output/imagefs-glibc2.39-r0.tzst
+        
+      - name: Upload generated files
+        uses: actions/upload-artifact@v7
+        with:
+          name: production-build       # The name of the downloadable package
+          path: /tmp/archlinux/tmp2/output/output-full-glibc2.39-r0.tar.xz
+      
+      - name: Upload generated files
+        uses: actions/upload-artifact@v7
+        with:
+          name: production-build       # The name of the downloadable package
+          path: /tmp/archlinux/tmp2/output/output-lite-glibc2.39-r0.tar.xz
