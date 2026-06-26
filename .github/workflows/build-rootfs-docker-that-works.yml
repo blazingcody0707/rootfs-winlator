@@ -48,11 +48,11 @@ on:
       inputWineArm64ecURL:
         description: "输入 Wine ARM64EC 下载 URL："
         required: false
-        default: ""
+        default: "https://github.com/blazingcody0707/wine-winlator/releases/download/Customwinamd64arm64ecwcp/wine-10.14-arm64ec.wcp"
       inputWineAmd64URL:
         description: "输入 Wine AMD64 下载 URL："
         required: false
-        default: ""
+        default: "https://github.com/blazingcody0707/wine-winlator/releases/download/Customwinamd64arm64ecwcp/wine-10.15-amd64.wcp"
 
 env:
   gstVer: ${{ github.event.inputs.inputGstVersion }}
