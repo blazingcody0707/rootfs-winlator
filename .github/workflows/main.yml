@@ -1,0 +1,76 @@
+name: Build Winlator XFCE4 RootFS
+
+on:
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+  push:
+    branches:
+      - main
+
+jobs:
+  build-rootfs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU for ARM64 Emulation
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+
+      - name: Clone Waim908's rootfs-winlator
+        run: |
+          git clone https://github.com project
+          # If your repository already contains the customized scripts, skip the git clone 
+          # and replace 'project/' paths below with your local paths.
+
+      - name: Build RootFS inside Docker
+        run: |
+          docker run --rm --privileged \
+            -v ${{ github.workspace }}/project:/workspace \
+            -w /workspace \
+            waim908/ubuntuarm2404:wlt \
+            bash -c "
+              echo '==> Updating package lists...' && \
+              apt-get update && \
+              
+              echo '==> Installing XFCE4 and Desktop environment tools...' && \
+              ENV DEBIAN_FRONTEND=noninteractive apt-get install -y \
+                xfce4 \
+                xfce4-goodies \
+                xorg \
+                dbus-x11 \
+                tightvncserver \
+                pulseaudio \
+                systemd-sysv && \
+                
+              echo '==> Executing Waim908 build script...' && \
+              chmod +x build-rootfs.sh && \
+              ./build-rootfs.sh
+            "
+
+      - name: Compress and Prepare Output
+        run: |
+          cd project
+          # Identify where build-rootfs.sh drops its final directory structure 
+          # usually it outputs a tarball or a directory like 'rootfs'
+          # If it outputs a directory, we compress it into the specific Winlator format (.tzst)
+          if [ -d "rootfs" ]; then
+            echo "Compressing rootfs folder..."
+            tar -I 'zstd -19 -T0' -cvf winlator-xfce4-rootfs.tzst -C rootfs .
+          elif [ -f "rootfs.tar" ]; then
+            echo "Repacking tar to zstd..."
+            zstd -19 -T0 rootfs.tar -o winlator-xfce4-rootfs.tzst
+          else
+            echo "Searching for created rootfs files..."
+            find . -maxdepth 2 -name "*.tar*" -o -name "*.tzst"
+          fi
+
+      - name: Upload RootFS Artifact
+        uses: actions/artifacts@v4
+        with:
+          name: winlator-xfce4-rootfs
+          path: project/winlator-xfce4-rootfs.tzst
+          if-no-files-found: warn
+
