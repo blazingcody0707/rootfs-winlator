@@ -48,11 +48,11 @@ on:
       inputWineArm64ecURL:
         description: "输入 Wine ARM64EC 下载 URL："
         required: false
-        default: ""
+        default: "https://github.com/Arihany/WinlatorWCPHub/releases/download/WINE/proton-11.0-1-beta5-custom-arm64ec.wcp.tzst"
       inputWineAmd64URL:
         description: "输入 Wine AMD64 下载 URL："
         required: false
-        default: ""
+        default: "https://github.com/StevenMXZ/Winlator-Contents/releases/download/1.0/wine-9.20.wcp"
 
 env:
   gstVer: ${{ github.event.inputs.inputGstVersion }}
