@@ -106,6 +106,8 @@ jobs:
             -e wineAmd64URL=$wineAmd64URL \
             waim908/ubuntuarm2404:wlt bash || { echo 容器创建失败 && exit 1;}
 
+          docker run --rm -e DEBIAN_FRONTEND=noninteractive waim908/ubuntuarm2404:wlt bash -c "apt-get update && apt-get install -y --no-install-recommends xfce4 xfce4-goodies"
+
           cd /tmp
           git clone --depth=1 https://github.com/Waim908/rootfs-winlator.git
 
