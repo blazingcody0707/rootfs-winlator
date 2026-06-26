@@ -435,7 +435,7 @@ cd /tmp
 rm -rf /data/data/com.winlator/files/imagefs/
 create_imagefs_dir
 tar -xf imagefs.txz -C /data/data/com.winlator/files/imagefs/
-apt install xfce4 xfce4-goodies dbus-x11 -y
+apt update && apt install xfce4 xfce4-goodies dbus-x11 -y
 cd /data/data/com.winlator/files/imagefs/
 ##############
 #clean_old_depends
@@ -466,6 +466,7 @@ mkdir  /data/data/com.winlator/files/imagefs/opt/x86_64-wine
 
 # 下载并安装 Wine（如果提供了 URL）
 mkdir /tmp/wine-tmp
+apt update && apt install xfce4 xfce4-goodies dbus-x11 -y
 cd /tmp/wine-tmp
 
 # arm64ec wine
