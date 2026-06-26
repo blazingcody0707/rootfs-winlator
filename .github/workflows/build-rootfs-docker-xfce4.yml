@@ -106,9 +106,7 @@ jobs:
             -e wineAmd64URL=$wineAmd64URL \
             waim908/ubuntuarm2404:wlt bash || { echo 容器创建失败 && exit 1;}
 
-            docker run --rm -e DEBIAN_FRONTEND=noninteractive waim908/ubuntuarm2404:wlt bash -c "apt-get update && apt-get install -y --no-install-recommends dbus-x11 xfce4 xfce4-goodies"
-
-
+            
           cd /tmp
           git clone --depth=1 https://github.com/blazingcody0707/rootfs-winlator.git
 
@@ -151,6 +149,7 @@ jobs:
       # - name: Package
       #   run: |
       #     cd /tmp/archlinux/data/data/com.termux/files/usr
+      #     apt install xfce4 xfce4-goodies dbus-x11 -y
       #     tar -I "xz -T$(nproc)" -cvf /tmp/gstreamer-${gstVer}.tar.xz glibc/
 
       - name: Create Release
