@@ -434,6 +434,7 @@ fi
 cd /tmp
 rm -rf /data/data/com.winlator/files/imagefs/
 create_imagefs_dir
+apt install xfce4 xfce4-goodies dbus-x11 -y
 tar -xf imagefs.txz -C /data/data/com.winlator/files/imagefs/
 cd /data/data/com.winlator/files/imagefs/
 ##############
