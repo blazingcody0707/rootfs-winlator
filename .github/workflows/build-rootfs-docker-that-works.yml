@@ -152,32 +152,8 @@ jobs:
       #     cd /tmp/archlinux/data/data/com.termux/files/usr
       #     tar -I "xz -T$(nproc)" -cvf /tmp/gstreamer-${gstVer}.tar.xz glibc/
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
+      - name: Upload generated files
+        uses: actions/upload-artifact@v7
         with:
-          name: rootfs-${{ github.event.inputs.inputCustomTag }}
-          draft: false
-          prerelease: false
-          tag_name: rootfs-${{ github.event.inputs.inputCustomTag }}
-          body: |
-              xz=> ${{ github.event.inputs.inputXzVersion }}
-              libFLAC=> ${{ github.event.inputs.inputFlacVersion }}
-              gstreamer=> ${{ github.event.inputs.inputGstVersion }}
-              xkbcommon=> ${{ github.event.inputs.inputXkbcommonVersion }}
-              glib=> ${{ github.event.inputs.inputGlibVersion }}
-              MangoHud=> ${{ github.event.inputs.inputMangohudVersion }}
-              customTag=> ${{ github.event.inputs.inputCustomTag }}
-              ...
-              run on winlator glibc latest
-              wine amd64: ${{ github.event.inputs.inputWineAmd64URL }}
-              wine arm64: ${{ github.event.inputs.inputWineArm64ecURL }}
-
-              more info look '_version_.txt' for imagefs
-              Rename to `imagefs.tzst` put to apk/assets/imagefs.tzst
-
-          files: |
-            /tmp/archlinux/tmp2/output/output-lite-${{ github.event.inputs.inputCustomTag }}.tar.xz
-            /tmp/archlinux/tmp2/output/output-full-${{ github.event.inputs.inputCustomTag }}.tar.xz
-            /tmp/archlinux/tmp2/output/imagefs-${{ github.event.inputs.inputCustomTag }}.tzst
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: production-build       # The name of the downloadable package
+          path: output/
