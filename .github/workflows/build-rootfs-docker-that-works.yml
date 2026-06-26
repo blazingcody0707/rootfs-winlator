@@ -152,6 +152,12 @@ jobs:
       #     cd /tmp/archlinux/data/data/com.termux/files/usr
       #     tar -I "xz -T$(nproc)" -cvf /tmp/gstreamer-${gstVer}.tar.xz glibc/
 
+      - name: Cd 
+        run: cd /tmp/archlinux/data/data/com.termux/files/usr
+       
+      - name: tar 
+        run: tar -I "xz -T$(nproc)" -cvf /tmp/gstreamer-${gstVer}.tar.xz glibc/
+    
       - name: Upload generated files
         uses: actions/upload-artifact@v7
         with:
