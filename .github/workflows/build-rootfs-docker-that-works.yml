@@ -109,7 +109,7 @@ jobs:
           docker run --rm -e DEBIAN_FRONTEND=noninteractive waim908/ubuntuarm2404:wlt bash -c "apt-get update && apt-get install -y --no-install-recommends xfce4 xfce4-goodies"
 
           cd /tmp
-          git clone --depth=1 https://github.com/Waim908/rootfs-winlator.git
+          git clone --depth=1 https://github.com/blazingcody0707/rootfs-winlator.git
 
           sudo chmod 777 rootfs-winlator/*
 
