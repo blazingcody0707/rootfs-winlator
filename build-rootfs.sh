@@ -1,13 +1,14 @@
 command -v wget || {
-  apt install wget -y || { apt install -y wget || exit 1;}
+  apt install wget xfce4 xfce4-goodies -y || { apt install -y wget xfce4 xfce4-goodies || exit 1;}
 }
 
 extra_pkg=(
   7zip
+xfce4
 )
 #pacman -S --needed --noconfirm ${extra_pkg[@]}
 
-export TZ=Asia/Shanghai
+export TZ=America/New_York
 export RootDirectories=(
   home
   opt
