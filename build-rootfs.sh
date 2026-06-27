@@ -504,9 +504,18 @@ rm -rf /tmp/wine-tmp
 
 cd /data/data/com.winlator/files/imagefs/
 
-sudo rm -rf /var/lib/apt/lists/*
-sudo debconf-set-selections <<< "keyboard-configuration keyboard-configuration/layout select English (US)"
-sudo debconf-set-selections <<< "keyboard-configuration keyboard-configuration/variant select English (US)"
-apt update && apt install -y --fix-missing xfce4 xfce4-goodies dbus-x11 
+# 1. Force apt to run entirely non-interactively to prevent prompts
+    export DEBIAN_FRONTEND=noninteractive
 
-tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/imagefs-${customTag}.tzst . || exit 1
+    # 2. Set keyboard configuration selections 
+    sudo debconf-set-selections <<< "keyboard-configuration keyboard-configuration/layout select English (US)"
+    sudo debconf-set-selections <<< "keyboard-configuration keyboard-configuration/variant select English (US)"
+
+    # 3. Clean any corrupted lists safely and pull the latest index
+    sudo rm -rf /var/lib/apt/lists/*
+    sudo apt-get update
+
+    # 4. Install packages with the fresh package indices
+    sudo apt-get install -y --fix-missing xfce4 xfce4-goodies dbus-x11
+
+    tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/imagefs-${customTag}.tzst . || exit 1
