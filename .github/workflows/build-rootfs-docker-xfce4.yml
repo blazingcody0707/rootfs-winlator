@@ -190,5 +190,5 @@ jobs:
 
   trigger-custom-yaml:
     # Use your GitHub username and your fork's branch name
-    uses: blazingcody0707/rootfs-winlator/.github/workflows/fix.yaml@master
+    uses: blazingcody0707/rootfs-winlator/.github/workflows/Fix.yaml@master
     secrets: inherit # Automatically passes secrets if your sub-workflow needs them
