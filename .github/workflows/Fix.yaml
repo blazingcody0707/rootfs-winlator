@@ -1,5 +1,4 @@
-- name:Fix /tmp permissions
-  run: |
-    sudo chown root:root /tmp
-    sudo chmod 1777 /tmp
-    sudo apt-get update
+      - name: Update apt repositories
+        run: |
+          sudo apt-get -o APT::Sandbox::User=root update
+          sudo apt-get -o APT::Sandbox::User=root install -y <your-package-name>
