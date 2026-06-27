@@ -1,0 +1,5 @@
+- name:Fix /tmp permissions
+  run: |
+    sudo chown root:root /tmp
+    sudo chmod 1777 /tmp
+    sudo apt-get update
