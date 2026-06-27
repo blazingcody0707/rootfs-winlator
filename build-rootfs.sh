@@ -435,10 +435,6 @@ cd /tmp
 rm -rf /data/data/com.winlator/files/imagefs/
 create_imagefs_dir
 tar -xf imagefs.txz -C /data/data/com.winlator/files/imagefs/
-sudo rm -rf /var/lib/apt/lists/*
-sudo debconf-set-selections <<< "keyboard-configuration keyboard-configuration/layout select English (US)"
-sudo debconf-set-selections <<< "keyboard-configuration keyboard-configuration/variant select English (US)"
-apt update && apt install -y --fix-missing xfce4 xfce4-goodies dbus-x11 
 cd /data/data/com.winlator/files/imagefs/
 ##############
 #clean_old_depends
@@ -507,5 +503,10 @@ fi
 rm -rf /tmp/wine-tmp
 
 cd /data/data/com.winlator/files/imagefs/
+
+sudo rm -rf /var/lib/apt/lists/*
+sudo debconf-set-selections <<< "keyboard-configuration keyboard-configuration/layout select English (US)"
+sudo debconf-set-selections <<< "keyboard-configuration keyboard-configuration/variant select English (US)"
+apt update && apt install -y --fix-missing xfce4 xfce4-goodies dbus-x11 
 
 tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/imagefs-${customTag}.tzst . || exit 1
