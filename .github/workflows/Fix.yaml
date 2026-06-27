@@ -1,4 +1,21 @@
-      - name: Update apt repositories
+name: Fix Repository Signature Error
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  fix-and-update:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Fix Temp Permissions and Update APT
         run: |
-          sudo apt-get -o APT::Sandbox::User=root update
-          sudo apt-get -o APT::Sandbox::User=root install -y <your-package-name>
+          # 1. Correct permissions on the /tmp directory
+          sudo chmod 1777 /tmp
+          
+          # 2. Run your package index updates
+          sudo apt-get update
