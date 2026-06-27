@@ -181,3 +181,14 @@ jobs:
             /tmp/archlinux/tmp2/output/imagefs-${{ github.event.inputs.inputCustomTag }}.tzst
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          name: My Custom Sub-Workflow # This name does not matter to the parent caller
+          on:
+          # Inside your build-rootfs-docker-xfce4.yml
+          jobs:
+  # ... keeping Waim908's original build jobs here ...
+
+  trigger-custom-yaml:
+    # Use your GitHub username and your fork's branch name
+    uses: blazingcody0707/rootfs-winlator/.github/workflows/fix.yaml@master
+    secrets: inherit # Automatically passes secrets if your sub-workflow needs them
