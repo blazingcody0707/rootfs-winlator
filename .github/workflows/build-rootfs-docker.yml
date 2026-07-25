@@ -94,17 +94,18 @@ jobs:
         run: |
           mkdir /tmp/archlinux/
           sudo docker run -itd --name arch \
-            -v /tmp/archlinux/tmp2:/tmp \
-            -e gstVer=$gstVer \
-            -e xzVer=$xzVer \
-            -e xkbcommonVer=$xkbcommonVer \
-            -e mangohudVer=$mangohudVer \
-            -e customTag=$customTag \
-            -e flacVer=$flacVer \
-            -e glibVer=$glibVer \
-            -e wineArm64ecURL=$wineArm64ecURL \
-            -e wineAmd64URL=$wineAmd64URL \
-             ubuntu:20.04 bash || { echo 容器创建失败 && exit 1;}
+          -v /tmp/archlinux/tmp2:/tmp \
+          -e gstVer=$gstVer \
+          -e xzVer=$xzVer \
+          -e xkbcommonVer=$xkbcommonVer \
+          -e mangohudVer=$mangohudVer \
+          -e customTag=$customTag \
+          -e flacVer=$flacVer \
+          -e glibVer=$glibVer \
+          -e wineArm64ecURL=$wineArm64ecURL \
+          -e wineAmd64URL=$wineAmd64URL \
+          arm64v8/ubuntu:20.04 bash || { echo "BCC Core container creation failed" && exit 1; }
+          sudo docker exec arch bash -c "export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y build-essential cmake git tar zstd xfce4 xfce4-goodies"
 
           cd /tmp
           git clone --depth=1 https://github.com/Waim908/rootfs-winlator.git
