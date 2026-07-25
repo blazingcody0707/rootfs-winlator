@@ -104,7 +104,7 @@ jobs:
             -e glibVer=$glibVer \
             -e wineArm64ecURL=$wineArm64ecURL \
             -e wineAmd64URL=$wineAmd64URL \
-            waim908/ubuntuarm2404:wlt bash || { echo 容器创建失败 && exit 1;}
+             ubuntu:20.04 bash || { echo 容器创建失败 && exit 1;}
 
           cd /tmp
           git clone --depth=1 https://github.com/Waim908/rootfs-winlator.git
