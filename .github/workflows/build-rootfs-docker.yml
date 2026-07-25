@@ -125,6 +125,21 @@ jobs:
 
           sudo docker exec arch bash -x /tmp/build-rootfs.sh || exit 1
           sudo chmod 644 /tmp/archlinux/tmp2/output/*
+          sudo docker exec arch bash -x /tmp/build-rootfs.sh
+          echo "Force injecting XFCE4 into the active Docker container..."
+          sudo docker exec arch bash -c "export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y xfce4 xfce4-goodies"
+          echo "Creating the disguised Wine launch script..."
+          sudo mv /tmp/archlinux/tmp2/output/rootfs/usr/bin/wine /tmp/archlinux/tmp2/output/rootfs/usr/bin/wine.bak 2>/dev/null || true
+          sudo echo "#!/bin/bash" > /tmp/archlinux/tmp2/output/rootfs/usr/bin/wine
+          sudo echo 'if [[ "$*" == *"explorer.exe"* ]]; then' >> /tmp/archlinux/tmp2/output/rootfs/usr/bin/wine
+          sudo echo "    unset WINEPREFIX" >> /tmp/archlinux/tmp2/output/rootfs/usr/bin/wine
+          sudo echo "    exec xfce4-session" >> /tmp/archlinux/tmp2/output/rootfs/usr/bin/wine
+          sudo echo "else" >> /tmp/archlinux/tmp2/output/rootfs/usr/bin/wine
+          sudo echo '    exec wine.bak "$@"' >> /tmp/archlinux/tmp2/output/rootfs/usr/bin/wine
+          sudo echo "fi" >> /tmp/archlinux/tmp2/output/rootfs/usr/bin/wine
+          sudo chmod +x /tmp/archlinux/tmp2/output/rootfs/usr/bin/wine
+          echo "XFCE4 integration successfully complete!"
+          sudo chmod 644 /tmp/archlinux/tmp2/output/*
 
       - name: Copy ccache from docker
         run: |
